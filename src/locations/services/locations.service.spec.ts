@@ -79,7 +79,11 @@ describe('LocationsService', () => {
       expect(response).toEqual(locations);
 
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(locationRepository.find).toHaveBeenCalled();
+      expect(locationRepository.find).toHaveBeenCalledWith({
+        order: {
+          createdAt: 'ASC',
+        },
+      });
     });
   });
 

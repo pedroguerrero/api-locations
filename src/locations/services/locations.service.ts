@@ -30,7 +30,11 @@ export class LocationsService {
   }
 
   getAll(): Promise<Location[]> {
-    return this.locationRespository.find();
+    return this.locationRespository.find({
+      order: {
+        createdAt: 'ASC',
+      },
+    });
   }
 
   async getById(id: string): Promise<Location> {
