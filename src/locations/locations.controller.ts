@@ -19,8 +19,8 @@ import {
 } from '@nestjs/common';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
-import { ParamLocationId } from './dto/param-location-id';
 import { LocationsService } from './services/locations.service';
+import { ParamLocationIdDto } from './dto/param-location-id.dto';
 import { ResponseLocation } from './responses/response-location.response';
 import { ResponseLocations } from './responses/response-locations.response';
 
@@ -68,7 +68,7 @@ export class LocationsController {
   })
   @Put(':id')
   async updateLocation(
-    @Param() { id }: ParamLocationId,
+    @Param() { id }: ParamLocationIdDto,
     @Body() updateLocationDto: UpdateLocationDto,
   ): Promise<ResponseLocation> {
     const response = await this.locationService.updateById(
@@ -88,7 +88,7 @@ export class LocationsController {
   })
   @Get(':id')
   async getLocation(
-    @Param() { id }: ParamLocationId,
+    @Param() { id }: ParamLocationIdDto,
   ): Promise<ResponseLocation> {
     const response = await this.locationService.getById(id);
 
@@ -103,7 +103,7 @@ export class LocationsController {
     description: 'Location not found',
   })
   @Delete(':id')
-  async deleteLocation(@Param() { id }: ParamLocationId): Promise<void> {
+  async deleteLocation(@Param() { id }: ParamLocationIdDto): Promise<void> {
     await this.locationService.deleteById(id);
   }
 }
