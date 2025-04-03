@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  UpdateDateColumn,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'locations',
@@ -56,4 +62,20 @@ export class Location {
     type: 'numeric',
   })
   longitude: number;
+
+  @ApiProperty({
+    type: Date,
+    description: 'Date when the location was created',
+    example: '2023-10-01T12:00:00Z',
+  })
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @ApiProperty({
+    type: Date,
+    description: 'Date when the location was last updated',
+    example: '2023-10-01T12:00:00Z',
+  })
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
