@@ -10,7 +10,7 @@ export class UpdateLocationDto {
     example: 'Central Park',
     required: false,
   })
-  name: string;
+  name?: string;
 
   @IsOptional()
   @IsString()
@@ -19,7 +19,7 @@ export class UpdateLocationDto {
     example: 'A large public park in New York City.',
     required: false,
   })
-  description: string;
+  description?: string;
 
   @IsOptional()
   @IsString()
@@ -28,5 +28,5 @@ export class UpdateLocationDto {
     example: 'https://example.com/icon.png',
     required: false,
   })
-  icon: string;
+  icon?: string;
 }
