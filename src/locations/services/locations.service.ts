@@ -1,19 +1,22 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  BadRequestException,
   Injectable,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { Location } from '../entities/locations.entity';
+import { WebsocketService } from './websocket.service';
 import { CreateLocationDto } from '../dto/create-location.dto';
 import { UpdateLocationDto } from '../dto/update-location.dto';
+import { EventType } from '../enums/event-type.enum';
 
 @Injectable()
 export class LocationsService {
   constructor(
     @InjectRepository(Location)
     private readonly locationRespository: Repository<Location>,
+    private readonly websocketService: WebsocketService,
   ) {}
 
   async add(createLocationDto: CreateLocationDto): Promise<Location> {
@@ -26,7 +29,11 @@ export class LocationsService {
       longitude: longitude,
     });
 
-    return await this.locationRespository.save(newLocation);
+    const location = await this.locationRespository.save(newLocation);
+
+    this.websocketService.publishMessage(EventType.ADD_LOCATION, newLocation);
+
+    return location;
   }
 
   getAll(): Promise<Location[]> {
@@ -55,6 +62,8 @@ export class LocationsService {
     if (!affected) {
       throw new NotFoundException(`Location with id ${id} not found`);
     }
+
+    this.websocketService.publishMessage(EventType.DELETE_LOCATION, { id });
   }
 
   async updateById(
@@ -74,6 +83,14 @@ export class LocationsService {
       ...updateLocationDto,
     };
 
-    return await this.locationRespository.save(updatedLocation);
+    const newUpdatedLocation =
+      await this.locationRespository.save(updatedLocation);
+
+    this.websocketService.publishMessage(
+      EventType.UPDATE_LOCATION,
+      newUpdatedLocation,
+    );
+
+    return newUpdatedLocation;
   }
 }

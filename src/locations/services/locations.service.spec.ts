@@ -2,17 +2,21 @@ import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 import { LocationsService } from './locations.service';
+import { WebsocketService } from './websocket.service';
 import { Location } from '../entities/locations.entity';
 import { UpdateLocationDto } from '../dto/update-location.dto';
 
 describe('LocationsService', () => {
-  let locationRepository: Repository<Location>;
+  let publishMessage: jest.Mock;
   let service: LocationsService;
+  let locationRepository: Repository<Location>;
 
   beforeEach(async () => {
+    publishMessage = jest.fn();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         { provide: getRepositoryToken(Location), useValue: {} },
+        { provide: WebsocketService, useValue: { publishMessage } },
         LocationsService,
       ],
     }).compile();
@@ -49,6 +53,11 @@ describe('LocationsService', () => {
       expect(locationRepository.create).toHaveBeenCalled();
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(locationRepository.save).toHaveBeenCalled();
+
+      expect(publishMessage).toHaveBeenCalledWith(
+        'addLocation',
+        expect.anything(),
+      );
     });
   });
 
@@ -129,6 +138,11 @@ describe('LocationsService', () => {
 
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(locationRepository.delete).toHaveBeenCalledWith('1');
+
+      expect(publishMessage).toHaveBeenCalledWith(
+        'deleteLocation',
+        expect.anything(),
+      );
     });
 
     it('Should throw an exception when a location is not found', () => {
@@ -174,6 +188,11 @@ describe('LocationsService', () => {
       expect(service.getById).toHaveBeenCalledWith('1');
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(locationRepository.save).toHaveBeenCalled();
+
+      expect(publishMessage).toHaveBeenCalledWith(
+        'updateLocation',
+        expect.anything(),
+      );
     });
 
     it('Should throw an error when no fields are provided to update', () => {
