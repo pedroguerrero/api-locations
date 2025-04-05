@@ -90,7 +90,7 @@ describe('LocationsService', () => {
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(locationRepository.find).toHaveBeenCalledWith({
         order: {
-          createdAt: 'ASC',
+          createdAt: 'DESC',
         },
       });
     });
