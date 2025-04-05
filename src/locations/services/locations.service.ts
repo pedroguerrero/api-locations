@@ -39,7 +39,7 @@ export class LocationsService {
   getAll(): Promise<Location[]> {
     return this.locationRespository.find({
       order: {
-        createdAt: 'ASC',
+        createdAt: 'DESC',
       },
     });
   }
