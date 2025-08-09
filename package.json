@@ -86,5 +86,14 @@
       ".entity.ts",
       ".response.ts"
     ]
+  },
+  "overrides": {
+    "typeorm": {
+      "glob": {
+        "minimatch": {
+          "brace-expansion": "2.0.2"
+        }
+      }
+    }
   }
 }
