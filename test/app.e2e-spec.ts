@@ -23,11 +23,11 @@ describe('AppController (e2e)', () => {
     process.env.DATABASE_USERNAME = postgresContainer.getUsername();
     process.env.DATABASE_PASSWORD = postgresContainer.getPassword();
     process.env.DATABASE_NAME = postgresContainer.getDatabase();
-  });
+  }, 15000);
 
   afterAll(async () => {
     await postgresContainer.stop();
-  });
+  }, 15000);
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
