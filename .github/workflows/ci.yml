@@ -33,6 +33,7 @@ jobs:
 
       - name: Run e2e tests
         run: npm run test:e2e
+
       - name: Login to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
@@ -44,6 +45,8 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: pguerrero86/api-locations-github
+          tags: |
+            type=sha,format=short
 
       - name: Build and push Docker image
         id: push
