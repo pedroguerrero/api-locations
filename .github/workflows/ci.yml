@@ -51,7 +51,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
-          snyk container ${{ vars.DOCKER_PROJECT_NAME }}:${{ github.sha }} \
+          snyk container test ${{ vars.DOCKER_PROJECT_NAME }}:${{ github.sha }} \
             --file=Dockerfile \
             --sarif-file-output=snyk-container.sarif || true
 
