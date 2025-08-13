@@ -1,9 +1,9 @@
-FROM node:22.14.0-alpine AS base
+FROM node:22.18.0-alpine AS base
 WORKDIR /app
 COPY . .
 RUN npm install && npm run build
 
-FROM node:22.14.0-alpine
+FROM node:22.18.0-alpine
 WORKDIR /app
 RUN adduser -h /app -s /sbin/nologin -D -H -u 1001 app && \
   chown -R app:app /app
