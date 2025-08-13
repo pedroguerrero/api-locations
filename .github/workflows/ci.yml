@@ -41,7 +41,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Build image
-        run: docker image build -t ${{ env.DOCKER_PROJECT_NAME }}:${{ github.sha }} .
+        run: docker image build -t ${{ vars.DOCKER_PROJECT_NAME }}:${{ github.sha }} .
 
       - uses: snyk/actions/setup@master
         with:
@@ -51,7 +51,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
-          snyk container ${{ env.DOCKER_PROJECT_NAME }}:${{ github.sha }} \
+          snyk container ${{ vars.DOCKER_PROJECT_NAME }}:${{ github.sha }} \
             --file=Dockerfile \
             --sarif-file-output=snyk-container.sarif || true
 
@@ -64,7 +64,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ env.DOCKER_IMAGE_USER }}/${{ env.DOCKER_PROJECT_NAME }}
+          images: ${{ vars.DOCKER_IMAGE_USER }}/${{ vars.DOCKER_PROJECT_NAME }}
           tags: |
             type=sha,format=short
 
