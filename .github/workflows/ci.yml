@@ -52,13 +52,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: ${{ vars.DOCKER_IMAGE_USER }}/${{ vars.DOCKER_PROJECT_NAME }}:${{ github.sha }}
-          tags: |
-            type=sha,format=short
 
       - name: Build and push Docker image
         id: push
