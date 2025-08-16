@@ -34,21 +34,19 @@ jobs:
       - name: Run e2e tests
         run: npm run test:e2e
 
-      - name: Install Sonar build-wrapper
-        uses: SonarSource/sonarqube-scan-action/install-build-wrapper@5.3.0
-        with:
-          build-wrapper-output: build_wrapper_output
-
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
         with:
           args: >
             -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
             -Dsonar.projectName=api-locations
-            -Dsonar.sources=.
+            -Dsonar.projectBaseDir=.
+            -Dsonar.sources=src
+            -Dsonar.tests=test
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
             -Dsonar.exclusions=node_modules/**,dist/**,coverage/**,**/*.spec.ts
 
