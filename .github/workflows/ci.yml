@@ -34,18 +34,23 @@ jobs:
       - name: Run e2e tests
         run: npm run test:e2e
 
+      - name: Install Sonar build-wrapper
+        uses: SonarSource/sonarqube-scan-action/install-build-wrapper@5.3.0
+        with:
+          build-wrapper-output: build_wrapper_output
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          organization: ${{ secrets.SONAR_ORGANIZATION }} # configurar en Settings > Secrets
-          token: ${{ secrets.SONAR_TOKEN }} # configurar en Settings > Secrets
-          projectKey: ${{ secrets.SONAR_PROJECT_KEY }} # o poner el projectKey literal
-          projectName: api-locations
-          extraProperties: |
-            # Ruta al informe de cobertura generado por "npm run test:cov"
-            sonar.javascript.lcov.reportPaths=coverage/lcov.info
-            # Excluir dependencias y directorios no relevantes
-            sonar.exclusions=node_modules/**,dist/**,coverage/**,**/*.spec.ts
+          args: >
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.projectName=api-locations
+            -Dsonar.sources=.
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.exclusions=node_modules/**,dist/**,coverage/**,**/*.spec.ts
 
       - name: Build image
         run: docker image build -t ${{ vars.DOCKER_IMAGE_USER }}/${{ vars.DOCKER_PROJECT_NAME }}:${{ github.sha }} .
