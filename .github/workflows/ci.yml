@@ -44,6 +44,13 @@ jobs:
         with:
           projectBaseDir: .
 
+      - name: Sonar Quality Gate
+        uses: SonarSource/sonarqube-quality-gate-action@master
+        with:
+          scanMetadataReportFile: .scannerwork/report-task.txt
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
       - name: Build image
         run: docker image build -t ${{ vars.DOCKER_IMAGE_USER }}/${{ vars.DOCKER_PROJECT_NAME }}:${{ github.sha }} .
 
