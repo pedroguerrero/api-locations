@@ -1,0 +1,6 @@
+{
+  "sonarlint.connectedMode.project": {
+    "connectionId": "pedroguerrero",
+    "projectKey": "pedroguerrero_api-locations"
+  }
+}
