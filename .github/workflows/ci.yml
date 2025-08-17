@@ -43,7 +43,7 @@ jobs:
           args: >
             -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-            -Dsonar.projectName=api-locations
+            -Dsonar.projectName=${{ vars.SONAR_PROJECT_NAME }}
             -Dsonar.projectBaseDir=.
             -Dsonar.sources=src
             -Dsonar.language=ts
