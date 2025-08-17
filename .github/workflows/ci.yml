@@ -46,9 +46,11 @@ jobs:
             -Dsonar.projectName=api-locations
             -Dsonar.projectBaseDir=.
             -Dsonar.sources=src
-            -Dsonar.tests=test
+            -Dsonar.language=ts
+            -Dsonar.tests=src
+            -Dsonar.test.inclusions=**/*.spec.ts
+            -Dsonar.exclusions=**/node_modules/**,coverage/**,src/main.ts,**/*.enum.ts
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-            -Dsonar.exclusions=node_modules/**,dist/**,coverage/**,**/*.spec.ts
 
       - name: Build image
         run: docker image build -t ${{ vars.DOCKER_IMAGE_USER }}/${{ vars.DOCKER_PROJECT_NAME }}:${{ github.sha }} .
